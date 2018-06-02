@@ -1,0 +1,14 @@
+- hosts: localhost
+  vars:
+    messege: "Hello Ansiblee World!"
+    resource_path: "./src/main/resources"
+    scala_version: "2.10"
+  tasks:
+  - name: Package application
+    shell: sbt clean compile package
+  - name: write the config file
+    template:
+      src: "{{resource_path}}/template.conf"
+      dest: "{{resource_path}}/application.conf"
+  - name: Run application
+    shell: scala ./target/scala-{{ scala_version }}/sbt-ansible-deploy_{{scala_version}}-1.0.jar
